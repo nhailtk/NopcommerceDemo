@@ -3,7 +3,7 @@
 	<test name="RunOnChrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-		<class name="com.nopcommerce.user.UserRegister" />
+		<class name="com.nopcommerce.user.UserLogin" />
 		</classes>
 	</test> <!-- Test -->
 
