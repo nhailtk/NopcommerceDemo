@@ -2,6 +2,7 @@ package com.nopcommerce.pageObjects.user;
 
 import org.openqa.selenium.WebDriver;
 
+import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserHomePageUI;
 import com.nopcommerce.pageUIs.user.UserRegisterPageUI;
 
@@ -16,8 +17,15 @@ public class UserHomePageObject extends BasePage {
 	}
 
 	public boolean verifyDisplayMyAccountMenu() {
-		waitForElementVisible(driver, UserHomePageUI.HEADER_DYNAMIC_LINK,"ico-account");
-		return elementIsDisplayed(driver, UserHomePageUI.HEADER_DYNAMIC_LINK,"ico-account");
+		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_LINK,"ico-account");
+		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK,"ico-account");
+	}
+
+	public UserProductListPageObject openProductListPage() {
+		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_MENU, "Computers");
+		hoverMouseToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, "Computers");
+		
+		return (UserProductListPageObject)openDynamicHeaderMenu(driver,"Desktops");
 	}
 
 

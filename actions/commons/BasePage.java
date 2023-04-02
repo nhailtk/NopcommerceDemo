@@ -23,6 +23,9 @@ import com.nopcommerce.pageObjects.user.PageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
+import com.nopcommerce.pageUIs.user.BasePageUI;
+import com.nopcommerce.pageUIs.user.UserAddressPageUI;
+import com.nopcommerce.pageUIs.user.UserCustomerInfoPageUI;
 import com.nopcommerce.pageUIs.user.UserHomePageUI;
 
 public class BasePage {
@@ -377,6 +380,11 @@ public class BasePage {
 		action.moveToElement(getElement(driver, xpathLocator)).perform();
 	}
 
+	protected void hoverMouseToElement(WebDriver driver, String xpathLocator, String... dynamicValues) {
+		Actions action = new Actions(driver);
+		action.moveToElement(getElement(driver, getDynamicXpath(xpathLocator, dynamicValues))).perform();
+	}
+
 	protected void pressKeyToElement(WebDriver driver, String xpathLocator, Keys key) {
 		Actions action = new Actions(driver);
 		action.sendKeys(getElement(driver, xpathLocator), key).perform();
@@ -423,6 +431,11 @@ public class BasePage {
 	protected void scrollToElement(WebDriver driver, String xpathLocator) {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver, xpathLocator));
+	}
+	
+	protected void scrollToElement(WebDriver driver, String xpathLocator, String... dynamicValues) {
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver,  getDynamicXpath(xpathLocator, dynamicValues)));
 	}
 
 	protected void sendkeyToElementByJS(WebDriver driver, String xpathLocator, String value) {
@@ -539,9 +552,9 @@ public class BasePage {
 		explicitWait.until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicXpath(xpathLocator, dynamicValues))));
 	}
 
-	public BasePage openDynamicHeaderPage(WebDriver driver, String locator) {
-		waitForElementClickable(driver, UserHomePageUI.HEADER_DYNAMIC_LINK, locator);
-		clickToElement(driver, UserHomePageUI.HEADER_DYNAMIC_LINK, locator);
+	public BasePage openDynamicHeaderLinks(WebDriver driver, String locator) {
+		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_LINK, locator);
+		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_LINK, locator);
 		switch (locator) {
 		case "ico-register":
 			return PageGeneratorManager.getUserRegisterPage(driver);
@@ -549,10 +562,77 @@ public class BasePage {
 			return PageGeneratorManager.getUserLoginPage(driver);
 		case "ico-logout":
 			return PageGeneratorManager.getUserHomePage(driver);
+		case "ico-account":
+			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+		default:
+			throw new RuntimeException("Invalid Page");
+		}
+	}
+
+	public BasePage openDynamicHeaderMenu(WebDriver driver, String locator) {
+		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
+		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
+		switch (locator) {
+		case "Desktops":
+			return PageGeneratorManager.getUserProductListPage(driver);
 
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
+	}
+
+	public BasePage openDynamicPageOfMyAccount(WebDriver driver, String locator) {
+		waitForElementClickable(driver, BasePageUI.RIGHT_DYNAMIC_MENU_OF_MY_ACCOUNT, locator);
+		clickToElement(driver, BasePageUI.RIGHT_DYNAMIC_MENU_OF_MY_ACCOUNT, locator);
+		switch (locator) {
+		case "Addresses":
+			return PageGeneratorManager.getUserAddressPage(driver);
+		case "Change password":
+			return PageGeneratorManager.getUserChangePasswordPage(driver);
+		case "My product reviews":
+			return PageGeneratorManager.getUserHomePage(driver);
+		case "Customer info":
+			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+		default:
+			throw new RuntimeException("Invalid Page");
+		}
+	}
+
+	public boolean verifyDisplayDynamicTitlePage(WebDriver driver, String value) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TITLE_PAGE, value);
+		return elementIsDisplayed(driver, BasePageUI.DYNAMIC_TITLE_PAGE, value);
+	}
+
+	public void inputValueToDynamicTextbox(WebDriver driver, String locatorTexbox, String value) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, locatorTexbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX, value, locatorTexbox);
+	}
+
+	public void selectValueOfDynamicDropdown(WebDriver driver, String locatorDynamic, String value) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, locatorDynamic);
+		selectItemByValueInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, value, locatorDynamic);
+
+	}
+
+	public String vefifyValueOfDynamicTextbox(WebDriver driver, String dynamicLocator) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, dynamicLocator);
+		return getElementAttribute(driver, BasePageUI.DYNAMIC_TEXTBOX, "value", dynamicLocator);
+	}
+
+	public String vefifyValueOfDynamicDropdown(WebDriver driver, String dynamicLocator) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, dynamicLocator);
+		return getFirstItemInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, dynamicLocator);
+	}
+
+	public boolean verfifyUpdateSuccess(WebDriver driver, String dynamicLocator) {
+		waitForElementVisible(driver, BasePageUI.UPDATE_SUCCESS_NOTIFICATION, dynamicLocator);
+		return elementIsDisplayed(driver, BasePageUI.UPDATE_SUCCESS_NOTIFICATION, dynamicLocator);
+	}
+
+	public void clickToCloseButtonInNotification(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.CLOSE_BUTTON_IN_NOTIFICATION);
+		clickToElement(driver, BasePageUI.CLOSE_BUTTON_IN_NOTIFICATION);
+
 	}
 
 	protected long shortTimeOut = GlobalConstants.SHORT_TIMEOUT;

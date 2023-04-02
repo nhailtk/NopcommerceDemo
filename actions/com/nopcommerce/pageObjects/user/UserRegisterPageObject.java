@@ -27,11 +27,6 @@ public class UserRegisterPageObject extends BasePage{
 		return getElementText(driver, UserRegisterPageUI.ERROR_VALIDATE_FIELD, locatorError);
 	}
 
-	public void inputValueToTextbox(String locatorTextbox, String value) {
-		waitForElementVisible(driver, UserRegisterPageUI.TEXTBOX_LOCATOR, locatorTextbox);
-		sendkeyToElement(driver, UserRegisterPageUI.TEXTBOX_LOCATOR, value, locatorTextbox);
-		
-	}
 	
 	public String getTextConfirmRegisterSuccess() {
 		waitForElementVisible(driver, UserRegisterPageUI.CONFIRM_REGISTER_SUCCESS);
