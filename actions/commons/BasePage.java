@@ -569,6 +569,23 @@ public class BasePage {
 		}
 	}
 
+	public BasePage openDynamicFooterLinks(WebDriver driver, String locator) {
+		waitForElementClickable(driver, BasePageUI.FOOTER_DYNAMIC_LINK, locator);
+		clickToElement(driver, BasePageUI.FOOTER_DYNAMIC_LINK, locator);
+		switch (locator) {
+		case "Search":
+			return PageGeneratorManager.getUserSearchPage(driver);
+		case "ico-login":
+			return PageGeneratorManager.getUserLoginPage(driver);
+		case "ico-logout":
+			return PageGeneratorManager.getUserHomePage(driver);
+		case "ico-account":
+			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+		default:
+			throw new RuntimeException("Invalid Page");
+		}
+	}
+	
 	public BasePage openDynamicHeaderMenu(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
 		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);

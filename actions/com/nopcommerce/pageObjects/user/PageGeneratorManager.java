@@ -40,4 +40,8 @@ public class PageGeneratorManager {
 	public static UserProductListPageObject getUserProductListPage(WebDriver driver) {
 		return new UserProductListPageObject(driver);
 	}
+
+	public static UserSeachPageObject getUserSearchPage(WebDriver driver) {
+		return new UserSeachPageObject(driver);
+	}
 }

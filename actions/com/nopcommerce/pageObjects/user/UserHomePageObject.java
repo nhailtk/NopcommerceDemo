@@ -29,6 +29,12 @@ public class UserHomePageObject extends BasePage {
 	}
 
 
+	public void scrollToBottom(WebDriver driver) {
+		scrollToBottomPage(driver);
+		
+	}
+
+
 
 
 
