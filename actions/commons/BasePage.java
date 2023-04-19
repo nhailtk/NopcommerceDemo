@@ -22,6 +22,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.nopcommerce.pageObjects.user.PageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
+import com.nopcommerce.pageObjects.user.UserProductListPageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
 import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserAddressPageUI;
@@ -448,18 +449,13 @@ public class BasePage {
 		jsExecutor.executeScript("arguments[0].removeAttribute('" + attributeRemove + "');", getElement(driver, xpathLocator));
 	}
 
-	protected boolean areJQueryAndJSLoadedSuccess(WebDriver driver) {
-		WebDriverWait explicitWait = new WebDriverWait(driver, longTimeOut);
+	public  boolean isPageLoadedSuccess(WebDriver driver) {
+		WebDriverWait explicitWait = new WebDriverWait(driver, GlobalConstants.LONG_TIMEOUT);
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-
 		ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
-				try {
-					return ((Long) jsExecutor.executeScript("return jQuery.active") == 0);
-				} catch (Exception e) {
-					return true;
-				}
+				return (Boolean) jsExecutor.executeScript("return (window.jQuery != null) && (jQuery.active === 0);");
 			}
 		};
 
@@ -469,7 +465,6 @@ public class BasePage {
 				return jsExecutor.executeScript("return document.readyState").toString().equals("complete");
 			}
 		};
-
 		return explicitWait.until(jQueryLoad) && explicitWait.until(jsLoad);
 	}
 
@@ -591,6 +586,7 @@ public class BasePage {
 		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
 		switch (locator) {
 		case "Desktops":
+		case "Notebooks":
 			return PageGeneratorManager.getUserProductListPage(driver);
 
 		default:
@@ -626,8 +622,14 @@ public class BasePage {
 	}
 
 	public void selectValueOfDynamicDropdown(WebDriver driver, String locatorDynamic, String value) {
-		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, locatorDynamic);
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_DROPDOWN, locatorDynamic);
 		selectItemByValueInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, value, locatorDynamic);
+
+	}
+	
+	public void selectTextOfDynamicDropdown(WebDriver driver, String locatorDynamic, String value) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_DROPDOWN, locatorDynamic);
+		selectItemByTextInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, value, locatorDynamic);
 
 	}
 
@@ -650,6 +652,13 @@ public class BasePage {
 		waitForElementClickable(driver, BasePageUI.CLOSE_BUTTON_IN_NOTIFICATION);
 		clickToElement(driver, BasePageUI.CLOSE_BUTTON_IN_NOTIFICATION);
 
+	}
+	
+	public BasePage openProductListPage(WebDriver driver, String menu, String subMenu) {
+		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
+		hoverMouseToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
+		
+		return openDynamicHeaderMenu(driver,subMenu);
 	}
 
 	protected long shortTimeOut = GlobalConstants.SHORT_TIMEOUT;

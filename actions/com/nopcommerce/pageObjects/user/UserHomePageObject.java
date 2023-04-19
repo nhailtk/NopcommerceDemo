@@ -21,13 +21,6 @@ public class UserHomePageObject extends BasePage {
 		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK,"ico-account");
 	}
 
-	public UserProductListPageObject openProductListPage() {
-		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_MENU, "Computers");
-		hoverMouseToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, "Computers");
-		
-		return (UserProductListPageObject)openDynamicHeaderMenu(driver,"Desktops");
-	}
-
 
 	public void scrollToBottom(WebDriver driver) {
 		scrollToBottomPage(driver);
