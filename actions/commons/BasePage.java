@@ -28,6 +28,7 @@ import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserAddressPageUI;
 import com.nopcommerce.pageUIs.user.UserCustomerInfoPageUI;
 import com.nopcommerce.pageUIs.user.UserHomePageUI;
+import com.nopcommerce.pageUIs.user.UserWishlistPageUI;
 
 public class BasePage {
 	public static BasePage getBasePageObject() {
@@ -433,10 +434,10 @@ public class BasePage {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver, xpathLocator));
 	}
-	
+
 	protected void scrollToElement(WebDriver driver, String xpathLocator, String... dynamicValues) {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver,  getDynamicXpath(xpathLocator, dynamicValues)));
+		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver, getDynamicXpath(xpathLocator, dynamicValues)));
 	}
 
 	protected void sendkeyToElementByJS(WebDriver driver, String xpathLocator, String value) {
@@ -449,7 +450,7 @@ public class BasePage {
 		jsExecutor.executeScript("arguments[0].removeAttribute('" + attributeRemove + "');", getElement(driver, xpathLocator));
 	}
 
-	public  boolean isPageLoadedSuccess(WebDriver driver) {
+	public boolean isPageLoadedSuccess(WebDriver driver) {
 		WebDriverWait explicitWait = new WebDriverWait(driver, GlobalConstants.LONG_TIMEOUT);
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
@@ -559,6 +560,8 @@ public class BasePage {
 			return PageGeneratorManager.getUserHomePage(driver);
 		case "ico-account":
 			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+		case "ico-wishlist":
+			return PageGeneratorManager.getUserWishlistPage(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
@@ -570,17 +573,17 @@ public class BasePage {
 		switch (locator) {
 		case "Search":
 			return PageGeneratorManager.getUserSearchPage(driver);
-		case "ico-login":
-			return PageGeneratorManager.getUserLoginPage(driver);
-		case "ico-logout":
-			return PageGeneratorManager.getUserHomePage(driver);
+		case "Compare products list":
+			return PageGeneratorManager.getUserCompareProductsListPage(driver);
+		case "Recently viewed products":
+			return PageGeneratorManager.getUserRecentlyViewedProductsPage(driver);
 		case "ico-account":
 			return PageGeneratorManager.getUserCustomerInfoPage(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
 	}
-	
+
 	public BasePage openDynamicHeaderMenu(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
 		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
@@ -626,7 +629,7 @@ public class BasePage {
 		selectItemByValueInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, value, locatorDynamic);
 
 	}
-	
+
 	public void selectTextOfDynamicDropdown(WebDriver driver, String locatorDynamic, String value) {
 		waitForElementClickable(driver, BasePageUI.DYNAMIC_DROPDOWN, locatorDynamic);
 		selectItemByTextInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, value, locatorDynamic);
@@ -653,12 +656,18 @@ public class BasePage {
 		clickToElement(driver, BasePageUI.CLOSE_BUTTON_IN_NOTIFICATION);
 
 	}
-	
+
 	public BasePage openProductListPage(WebDriver driver, String menu, String subMenu) {
 		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
 		hoverMouseToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
-		
-		return openDynamicHeaderMenu(driver,subMenu);
+
+		return openDynamicHeaderMenu(driver, subMenu);
+	}
+
+
+	public String getProductName(WebDriver driver) {
+		waitForElementVisible(driver, BasePageUI.PRODUCT_NAME);
+		return getElementText(driver, BasePageUI.PRODUCT_NAME);
 	}
 
 	protected long shortTimeOut = GlobalConstants.SHORT_TIMEOUT;

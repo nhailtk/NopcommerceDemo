@@ -20,4 +20,14 @@ public class UserProductDetailPageObject extends BasePage {
 		return PageGeneratorManager.getUserMyProductReviewsPage(driver);
 	}
 
+	public void clickToAddWishlistButton() {
+		waitForElementVisible(driver, UserProductDetailPageUI.ADD_TO_WISHLIST_BUTTON);
+		clickToElement(driver, UserProductDetailPageUI.ADD_TO_WISHLIST_BUTTON);
+		
+	}
+	
+	public void scrollToBottom(WebDriver driver2) {
+		scrollToBottomPage(driver2);
+	}
+
 }

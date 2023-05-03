@@ -20,14 +20,14 @@ public class UserProductListPageObject extends BasePage {
 		this.driver = driver;
 	}
 
-	public UserProductDetailPageObject clickToProductTitle() {
-		clickToElement(driver, UserProductListPageUI.PRODUCT_TITLE);
+	public UserProductDetailPageObject clickToProductTitle(String productTitle) {
+		clickToElement(driver, UserProductListPageUI.PRODUCT_TITLE, productTitle);
 		return PageGeneratorManager.getUserProductDetailPage(driver);
 	}
 
-	public String getProductTitle() {
-		waitForElementVisible(driver, UserProductListPageUI.PRODUCT_TITLE);
-		return getElementText(driver, UserProductListPageUI.PRODUCT_TITLE);
+	public String getProductTitle(String productTitle) {
+		waitForElementVisible(driver, UserProductListPageUI.PRODUCT_TITLE, productTitle);
+		return getElementText(driver, UserProductListPageUI.PRODUCT_TITLE, productTitle);
 	}
 
 	public boolean isDisplayedSortWithNameASC() {
@@ -137,5 +137,15 @@ public class UserProductListPageObject extends BasePage {
 
 	public boolean isUndisplayedPagingIcon(String dynamicLocator) {
 		return elementIsUndisplayed(driver, UserProductListPageUI.NEXT_PAGING_ICON, dynamicLocator);
+	}
+
+	public void addProductToCompareList(String productName) {
+		waitForElementClickable(driver, UserProductListPageUI.ADD_TO_COMPARE_LIST_BUTTON, productName);
+		clickToElement(driver, UserProductListPageUI.ADD_TO_COMPARE_LIST_BUTTON, productName);
+		
+	}
+
+	public void scrollToBottom(WebDriver driver2) {
+		scrollToBottomPage(driver2);
 	}
 }

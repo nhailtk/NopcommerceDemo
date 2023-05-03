@@ -213,8 +213,8 @@ public class UserMyAccount extends BaseTest {
 	@Test
 	public void TC_04_My_Account_My_Product_Reviews() {
 		userProductListPage = (UserProductListPageObject) userHomePage.openProductListPage(driver, "Computers", "Desktops");
-		productTitle = userProductListPage.getProductTitle();
-		userProductDetailPage = userProductListPage.clickToProductTitle();
+		productTitle = userProductListPage.getProductTitle("Build your own computer");
+		userProductDetailPage = userProductListPage.clickToProductTitle("Build your own computer");
 		userProductReviewsPage = userProductDetailPage.clickAddReviewLink();
 
 		userProductReviewsPage.inputValueToDynamicTextbox(driver, locatorAddProductReviewTitle, textAddProductReviewTitle + productTitle);
