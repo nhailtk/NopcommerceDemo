@@ -22,7 +22,7 @@ public class UserProductListPageObject extends BasePage {
 
 	public UserProductDetailPageObject clickToProductTitle(String productTitle) {
 		clickToElement(driver, UserProductListPageUI.PRODUCT_TITLE, productTitle);
-		return PageGeneratorManager.getUserProductDetailPage(driver);
+		return UserPageGeneratorManager.getUserProductDetailPage(driver);
 	}
 
 	public String getProductTitle(String productTitle) {

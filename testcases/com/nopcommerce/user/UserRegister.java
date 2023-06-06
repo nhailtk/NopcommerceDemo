@@ -8,7 +8,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.beust.jcommander.Parameter;
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
 
@@ -35,14 +35,14 @@ public class UserRegister extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getWebDriver(browser);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 
 	}
 
 	@Test
 	public void TC_01_Register_Empty_Data() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.clickToRegisterButton();
 
@@ -56,7 +56,7 @@ public class UserRegister extends BaseTest {
 
 	@Test
 	public void TC_02_Register_Invalid_Email() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -72,7 +72,7 @@ public class UserRegister extends BaseTest {
 
 	@Test
 	public void TC_03_Register_Valid_Email() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -84,12 +84,12 @@ public class UserRegister extends BaseTest {
 
 		Assert.assertEquals(userRegisterPage.getTextConfirmRegisterSuccess(), "Your registration completed");
 
-		userHomePage = (UserHomePageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-lo");
+		userHomePage = (UserHomePageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-lo");
 	}
 
 	@Test
 	public void TC_04_Register_Exist_Email() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -105,7 +105,7 @@ public class UserRegister extends BaseTest {
 
 	@Test
 	public void TC_05_Register_Invalid_Length_Password() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -121,7 +121,7 @@ public class UserRegister extends BaseTest {
 
 	@Test
 	public void TC_06_Register_Do_Not_Match_Password() {
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);

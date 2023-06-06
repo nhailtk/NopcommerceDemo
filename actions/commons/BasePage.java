@@ -19,11 +19,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
+import com.nopcommerce.pageObjects.admin.AdminPageGeneratorManager;
+import com.nopcommerce.pageObjects.admin.AdminProductsListPageObject;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
 import com.nopcommerce.pageObjects.user.UserProductListPageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
+import com.nopcommerce.pageUIs.admin.AdminDashboardPageUI;
 import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserAddressPageUI;
 import com.nopcommerce.pageUIs.user.UserCustomerInfoPageUI;
@@ -397,6 +400,16 @@ public class BasePage {
 		action.sendKeys(getElement(driver, getDynamicXpath(xpathLocator, dynamicValues)), key).perform();
 	}
 
+	protected void doubleClickToElement(WebDriver driver, String xpathLocator) {
+		Actions action = new Actions(driver);
+		action.doubleClick(getElement(driver, xpathLocator)).perform();
+	}
+	
+	protected void doubleClickToElement(WebDriver driver, String xpathLocator, String... dynamicValues) {
+		Actions action = new Actions(driver);
+		action.doubleClick(getElement(driver, getDynamicXpath(xpathLocator, dynamicValues))).perform();
+	}
+	
 	protected void scrollToBottomPage(WebDriver driver) {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
@@ -548,70 +561,92 @@ public class BasePage {
 		explicitWait.until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicXpath(xpathLocator, dynamicValues))));
 	}
 
-	public BasePage openDynamicHeaderLinks(WebDriver driver, String locator) {
+	public BasePage openUserDynamicHeaderLinks(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_LINK, locator);
 		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_LINK, locator);
 		switch (locator) {
 		case "ico-register":
-			return PageGeneratorManager.getUserRegisterPage(driver);
+			return UserPageGeneratorManager.getUserRegisterPage(driver);
 		case "ico-login":
-			return PageGeneratorManager.getUserLoginPage(driver);
+			return UserPageGeneratorManager.getUserLoginPage(driver);
 		case "ico-logout":
-			return PageGeneratorManager.getUserHomePage(driver);
+			return UserPageGeneratorManager.getUserHomePage(driver);
 		case "ico-account":
-			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+			return UserPageGeneratorManager.getUserCustomerInfoPage(driver);
 		case "ico-wishlist":
-			return PageGeneratorManager.getUserWishlistPage(driver);
+			return UserPageGeneratorManager.getUserWishlistPage(driver);
+		case "ico-cart":
+			return UserPageGeneratorManager.getUserShoppingCartPage(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
 	}
 
-	public BasePage openDynamicFooterLinks(WebDriver driver, String locator) {
+	public BasePage openUserDynamicFooterLinks(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.FOOTER_DYNAMIC_LINK, locator);
 		clickToElement(driver, BasePageUI.FOOTER_DYNAMIC_LINK, locator);
 		switch (locator) {
 		case "Search":
-			return PageGeneratorManager.getUserSearchPage(driver);
+			return UserPageGeneratorManager.getUserSearchPage(driver);
 		case "Compare products list":
-			return PageGeneratorManager.getUserCompareProductsListPage(driver);
+			return UserPageGeneratorManager.getUserCompareProductsListPage(driver);
 		case "Recently viewed products":
-			return PageGeneratorManager.getUserRecentlyViewedProductsPage(driver);
-		case "ico-account":
-			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+			return UserPageGeneratorManager.getUserRecentlyViewedProductsPage(driver);
+		case "My account":
+			return UserPageGeneratorManager.getUserCustomerInfoPage(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
 	}
 
-	public BasePage openDynamicHeaderMenu(WebDriver driver, String locator) {
+	public BasePage openUserDynamicHeaderMenu(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
 		clickToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, locator);
 		switch (locator) {
 		case "Desktops":
 		case "Notebooks":
-			return PageGeneratorManager.getUserProductListPage(driver);
+			return UserPageGeneratorManager.getUserProductListPage(driver);
 
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
 	}
 
-	public BasePage openDynamicPageOfMyAccount(WebDriver driver, String locator) {
+	public BasePage openUserDynamicPageOfMyAccount(WebDriver driver, String locator) {
 		waitForElementClickable(driver, BasePageUI.RIGHT_DYNAMIC_MENU_OF_MY_ACCOUNT, locator);
 		clickToElement(driver, BasePageUI.RIGHT_DYNAMIC_MENU_OF_MY_ACCOUNT, locator);
 		switch (locator) {
 		case "Addresses":
-			return PageGeneratorManager.getUserAddressPage(driver);
+			return UserPageGeneratorManager.getUserAddressPage(driver);
 		case "Change password":
-			return PageGeneratorManager.getUserChangePasswordPage(driver);
+			return UserPageGeneratorManager.getUserChangePasswordPage(driver);
 		case "My product reviews":
-			return PageGeneratorManager.getUserHomePage(driver);
+			return UserPageGeneratorManager.getUserHomePage(driver);
 		case "Customer info":
-			return PageGeneratorManager.getUserCustomerInfoPage(driver);
+			return UserPageGeneratorManager.getUserCustomerInfoPage(driver);
+		case "Orders":
+			return UserPageGeneratorManager.getUserOrders(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
+	}
+
+	public void clickToCatalogMenu(WebDriver driver, String rightIcon, String text) {
+		waitForElementClickable(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
+		clickToElement(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
+
+	}
+
+	public BasePage clickToProductsSubMenu(WebDriver driver, String locator1, String locator2) {
+		waitForElementClickable(driver, BasePageUI.ADMIN_RIGHT_SUB_MENU, locator1, locator2);
+		clickToElement(driver, BasePageUI.ADMIN_RIGHT_SUB_MENU, locator1, locator2);
+		switch (locator2) {
+		case "Products":
+			return AdminPageGeneratorManager.getAdminProductsListPage(driver);
+		default:
+			throw new RuntimeException("Invalid Page");
+		}
+
 	}
 
 	public boolean verifyDisplayDynamicTitlePage(WebDriver driver, String value) {
@@ -661,9 +696,8 @@ public class BasePage {
 		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
 		hoverMouseToElement(driver, BasePageUI.HEADER_DYNAMIC_MENU, menu);
 
-		return openDynamicHeaderMenu(driver, subMenu);
+		return openUserDynamicHeaderMenu(driver, subMenu);
 	}
-
 
 	public String getProductName(WebDriver driver) {
 		waitForElementVisible(driver, BasePageUI.PRODUCT_NAME);

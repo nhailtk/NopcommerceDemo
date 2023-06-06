@@ -29,7 +29,7 @@ public class UserWishlistPageObject extends BasePage {
 		clickToElement(driver, UserWishlistPageUI.ADD_TO_CART_BUTTON);
 	}
 	public UserShoppingCartPageObject openShoppingCartPage() {
-		return PageGeneratorManager.getUserShoppingCartPage(driver);
+		return UserPageGeneratorManager.getUserShoppingCartPage(driver);
 	}
 
 	public void clickToRemoveProductButton() {

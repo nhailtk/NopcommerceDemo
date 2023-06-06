@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserAddressPageObject;
 import com.nopcommerce.pageObjects.user.UserChangePasswordPageObject;
 import com.nopcommerce.pageObjects.user.UserCustomerInfoPageObject;
@@ -87,8 +87,8 @@ public class UserMyAccount extends BaseTest {
 		driver = getWebDriver(browser);
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 		editEmail = "editEmail" + randomInt() + "@gmail.com";
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -102,16 +102,16 @@ public class UserMyAccount extends BaseTest {
 
 		// userHomePage = (UserHomePageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-logout");
 
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 
 		userLoginPage.inputTextboxAndClickButton(validEmail, password);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
 	}
 
 	@Test
 	public void TC_01_My_Account_Update_Customer_Info() {
-		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-account");
+		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-account");
 		Assert.assertTrue(userCustomerInfoPage.verifyDisplayDynamicTitlePage(driver, "Customer info"));
 
 		userCustomerInfoPage.selectValueOfGenderRadioButton();
@@ -143,10 +143,10 @@ public class UserMyAccount extends BaseTest {
 
 	@Test
 	public void TC_02_My_Account_Add_Address() {
-		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-account");
+		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-account");
 		Assert.assertTrue(userCustomerInfoPage.verifyDisplayDynamicTitlePage(driver, "Customer info"));
 
-		userAddressPage = (UserAddressPageObject) userCustomerInfoPage.openDynamicPageOfMyAccount(driver, "Addresses");
+		userAddressPage = (UserAddressPageObject) userCustomerInfoPage.openUserDynamicPageOfMyAccount(driver, "Addresses");
 		Assert.assertTrue(userAddressPage.verifyDisplayDynamicTitlePage(driver, "Addresses"));
 
 		userAddressPage.clickToAddNewButton();
@@ -183,10 +183,10 @@ public class UserMyAccount extends BaseTest {
 
 	@Test
 	public void TC_03_My_Account_Change_Password() {
-		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-account");
+		userCustomerInfoPage = (UserCustomerInfoPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-account");
 		Assert.assertTrue(userCustomerInfoPage.verifyDisplayDynamicTitlePage(driver, "Customer info"));
 
-		userChangePasswordPage = (UserChangePasswordPageObject) userCustomerInfoPage.openDynamicPageOfMyAccount(driver, "Change password");
+		userChangePasswordPage = (UserChangePasswordPageObject) userCustomerInfoPage.openUserDynamicPageOfMyAccount(driver, "Change password");
 		userChangePasswordPage.verifyDisplayDynamicTitlePage(driver, "Change password");
 
 		userChangePasswordPage.inputValueToDynamicTextbox(driver, locatorChangePasswordOldPassword, password);
@@ -198,15 +198,15 @@ public class UserMyAccount extends BaseTest {
 		Assert.assertTrue(userChangePasswordPage.verfifyUpdateSuccess(driver, updatePasswordSuccessful));
 		userChangePasswordPage.clickToCloseButtonInNotification(driver);
 
-		userHomePage = (UserHomePageObject) userChangePasswordPage.openDynamicHeaderLinks(driver, "ico-logout");
+		userHomePage = (UserHomePageObject) userChangePasswordPage.openUserDynamicHeaderLinks(driver, "ico-logout");
 
-		userLoginPage = (UserLoginPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-login");
 
 		userLoginPage.inputTextboxAndClickButton(editEmail, password);
 		Assert.assertEquals(userLoginPage.getTextErrorWithInvalidValue(), "Login was unsuccessful. Please correct the errors and try again.\nThe credentials provided are incorrect");
 
 		userLoginPage.inputTextboxAndClickButton(editEmail, newPassword);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
 	}
 
@@ -224,7 +224,7 @@ public class UserMyAccount extends BaseTest {
 		Assert.assertTrue(userProductReviewsPage.verifyDisplayProductReviewTitle(textAddProductReviewTitle, productTitle));
 		Assert.assertTrue(userProductReviewsPage.verifyDisplayProductReviewContent(textAddProductReviewContent, productTitle));
 		
-		userHomePage = (UserHomePageObject) userProductReviewsPage.openDynamicHeaderLinks(driver, "ico-logout");
+		userHomePage = (UserHomePageObject) userProductReviewsPage.openUserDynamicHeaderLinks(driver, "ico-logout");
 	}
 
 	@AfterClass

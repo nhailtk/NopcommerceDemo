@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
 
-public class PageGeneratorManager {
+public class UserPageGeneratorManager {
 	public static UserRegisterPageObject getUserRegisterPage(WebDriver driver) {
 		return new UserRegisterPageObject(driver);
 	}
@@ -59,5 +59,17 @@ public class PageGeneratorManager {
 
 	public static UserRecentlyViewedProductsPageObject getUserRecentlyViewedProductsPage(WebDriver driver) {
 		return new UserRecentlyViewedProductsPageObject(driver);
+	}
+	
+	public static UserCheckoutPageObject getUserCheckoutPage(WebDriver driver) {
+		return new UserCheckoutPageObject(driver);
+	}
+	
+	public static UserOrderCompletedPageObject getUserOrderCompletedPage(WebDriver driver) {
+		return new UserOrderCompletedPageObject(driver);
+	}
+
+	public static UserOrdersPageObject getUserOrders(WebDriver driver) {
+		return new UserOrdersPageObject(driver);
 	}
 }

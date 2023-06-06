@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserCompareProuductsListPageObject;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
@@ -36,7 +36,8 @@ public class UserWishlistCompareRecentView extends BaseTest {
 	String registerFirstName = "Anh Hoa";
 	String registerLastName = "Mai Nguyen";
 	String password = "123456";
-	String addedProduct = "The product has been added to your";
+
+	String confirmAddedProduct = "The product has been added to your wishlist";
 	String titleWishlistPage = "Wishlist";
 
 	String locatorFirstName = "FirstName";
@@ -51,8 +52,8 @@ public class UserWishlistCompareRecentView extends BaseTest {
 		driver = getWebDriver(browser);
 
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -64,10 +65,10 @@ public class UserWishlistCompareRecentView extends BaseTest {
 
 		Assert.assertEquals(userRegisterPage.getTextConfirmRegisterSuccess(), "Your registration completed");
 
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 
 		userLoginPage.inputTextboxAndClickButton(validEmail, password);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
 
 		userProductListPage = (UserProductListPageObject) userHomePage.openProductListPage(driver, "Computers", "Desktops");
@@ -80,10 +81,10 @@ public class UserWishlistCompareRecentView extends BaseTest {
 		userProductDetailPage = userProductListPage.clickToProductTitle("Lenovo IdeaCentre 600 All-in-One PC");
 
 		userProductDetailPage.clickToAddWishlistButton();
-		Assert.assertTrue(userProductDetailPage.verfifyUpdateSuccess(driver, addedProduct));
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
 		userProductDetailPage.clickToCloseButtonInNotification(driver);
 
-		userWishlistPage = (UserWishlistPageObject) userProductDetailPage.openDynamicHeaderLinks(driver, "ico-wishlist");
+		userWishlistPage = (UserWishlistPageObject) userProductDetailPage.openUserDynamicHeaderLinks(driver, "ico-wishlist");
 		Assert.assertTrue(userWishlistPage.verifyDisplayDynamicTitlePage(driver, titleWishlistPage));
 		Assert.assertEquals(userWishlistPage.getProductName(driver), "Lenovo IdeaCentre 600 All-in-One PC");
 
@@ -105,7 +106,7 @@ public class UserWishlistCompareRecentView extends BaseTest {
 
 	@Test
 	public void TC03_Remove_Product_From_Wishlist() {
-		userWishlistPage = (UserWishlistPageObject) userShoppingCartPage.openDynamicHeaderLinks(driver, "ico-wishlist");
+		userWishlistPage = (UserWishlistPageObject) userShoppingCartPage.openUserDynamicHeaderLinks(driver, "ico-wishlist");
 		userWishlistPage.clickToRemoveProductButton();
 		Assert.assertTrue(userWishlistPage.isDisplayedNoData());
 	}
@@ -116,16 +117,16 @@ public class UserWishlistCompareRecentView extends BaseTest {
 
 		userProductListPage.addProductToCompareList("Apple MacBook Pro 13-inch");
 		userProductListPage.isPageLoadedSuccess(driver);
-		Assert.assertTrue(userProductListPage.verfifyUpdateSuccess(driver, addedProduct));
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
 		userProductListPage.clickToCloseButtonInNotification(driver);
 
 		userProductListPage.addProductToCompareList("Asus N551JK-XO076H Laptop");
 		userProductListPage.isPageLoadedSuccess(driver);
-		Assert.assertTrue(userProductListPage.verfifyUpdateSuccess(driver, addedProduct));
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
 		userProductListPage.clickToCloseButtonInNotification(driver);
 
 		userProductListPage.scrollToBottom(driver);
-		userCompareProductsListPage = (UserCompareProuductsListPageObject) userProductListPage.openDynamicFooterLinks(driver, "Compare products list");
+		userCompareProductsListPage = (UserCompareProuductsListPageObject) userProductListPage.openUserDynamicFooterLinks(driver, "Compare products list");
 		Assert.assertTrue(userCompareProductsListPage.verifyInformationDisplayed());
 
 		userCompareProductsListPage.clickToClearListButton();
@@ -150,7 +151,7 @@ public class UserWishlistCompareRecentView extends BaseTest {
 		userProductDetailPage = userProductListPage.clickToProductTitle("Lenovo Thinkpad X1 Carbon Laptop");
 				
 		userProductDetailPage.scrollToBottom(driver);
-		userRecentlyViewedProductsPage = (UserRecentlyViewedProductsPageObject) userProductDetailPage.openDynamicFooterLinks(driver, "Recently viewed products");
+		userRecentlyViewedProductsPage = (UserRecentlyViewedProductsPageObject) userProductDetailPage.openUserDynamicFooterLinks(driver, "Recently viewed products");
 		Assert.assertTrue(userRecentlyViewedProductsPage.verifyInformationDisplayed());
 	}
 

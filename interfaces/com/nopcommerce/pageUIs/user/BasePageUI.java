@@ -11,5 +11,8 @@ public class BasePageUI {
 	public static String CLOSE_BUTTON_IN_NOTIFICATION = "XPATH=//div[@id='bar-notification']//span[@class='close']";
 	public static String DYNAMIC_TITLE_PAGE = "XPATH=//h1[contains(text(),'%s')]";
 	public static String PRODUCT_NAME = "XPATH=//td[@class='product']/a";
+	public static String CONFIRM_MASSAGE_OF_PRODUCTS = "XPATH=//p[@class='content']";
+	public static String ADMIN_RIGHT_MENU = "XPATH=//i[contains(@class,'%s')]/following-sibling::p[contains(text(),'%s')]";
+	public static String ADMIN_RIGHT_SUB_MENU = "XPATH=//p[contains(text(),'%s')]/parent::a/following-sibling::ul//p[contains(text(),'%s')]";
 
 }

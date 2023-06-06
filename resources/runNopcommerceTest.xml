@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Nopcommerce">
+	<parameter name="urlAdmin" value="https://admin-demo.nopcommerce.com/login?ReturnUrl=/admin/" />
+	<parameter name="urlUser" value="https://demo.nopcommerce.com/" />
 	<test name="RunOnChrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-		<class name="com.nopcommerce.user.UserWishlistCompareRecentView" />
+		<class name="com.nopcommerce.admin.AdminSearch" />
 		</classes>
 	</test> <!-- Test -->
 

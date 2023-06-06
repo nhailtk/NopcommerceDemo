@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
@@ -37,10 +37,10 @@ public class UserLogin extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getWebDriver(browser);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 
-		userRegisterPage = (UserRegisterPageObject) userHomePage.openDynamicHeaderLinks(driver, "ico-register");
+		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
 
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorFirstName, registerFirstName);
 		userRegisterPage.inputValueToDynamicTextbox(driver, locatorLastName, registerLastName);
@@ -56,44 +56,44 @@ public class UserLogin extends BaseTest {
 
 	@Test
 	public void TC_01_Login_Empty_Data() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.clickToLoginButton();
 		Assert.assertEquals(userLoginPage.getTextErrorWrongEmail(), "Please enter your email");
 	}
 
 	@Test
 	public void TC_02_Login_Wrong_Email() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.inputTextboxAndClickButton(wrongEmail, password);
 		Assert.assertEquals(userLoginPage.getTextErrorWrongEmail(), "Wrong email");
 	}
 
 	@Test
 	public void TC_03_Login_Unregistered_Email() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.inputTextboxAndClickButton(unregisteredEmail, password);
 		Assert.assertEquals(userLoginPage.getTextErrorWithInvalidValue(), "Login was unsuccessful. Please correct the errors and try again.\nNo customer account found");
 	}
 
 	@Test
 	public void TC_04_Login_Do_Not_Input_Password() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.inputTextboxAndClickButton(validEmail, "");
 		Assert.assertEquals(userLoginPage.getTextErrorWithInvalidValue(), "Login was unsuccessful. Please correct the errors and try again.\nThe credentials provided are incorrect");
 	}
 
 	@Test
 	public void TC_05_Login_Invalid_Password() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.inputTextboxAndClickButton(validEmail, "12345");
 		Assert.assertEquals(userLoginPage.getTextErrorWithInvalidValue(), "Login was unsuccessful. Please correct the errors and try again.\nThe credentials provided are incorrect");
 	}
 
 	@Test
 	public void TC_06_Login_Successful() {
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-login");
+		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 		userLoginPage.inputTextboxAndClickButton(validEmail, password);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
 	}
 

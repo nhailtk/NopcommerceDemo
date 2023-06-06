@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.nopcommerce.pageObjects.user.PageGeneratorManager;
+import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserProductListPageObject;
 
@@ -22,7 +22,7 @@ public class UserSortDisplayPaging extends BaseTest {
 	@BeforeClass
 	public void beforeClass(String browser) {
 		driver = getWebDriver(browser);
-		userHomePage = PageGeneratorManager.getUserHomePage(driver);
+		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		userProductListPage = (UserProductListPageObject) userHomePage.openProductListPage(driver, "Computers", "Notebooks");
 	}
 	

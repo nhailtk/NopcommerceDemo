@@ -2,6 +2,7 @@ package com.nopcommerce.pageObjects.user;
 
 import org.openqa.selenium.WebDriver;
 
+import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserHomePageUI;
 import com.nopcommerce.pageUIs.user.UserRegisterPageUI;
 
@@ -18,7 +19,7 @@ public class UserRegisterPageObject extends BasePage{
 	public UserHomePageObject clickToRegisterButton() {
 		waitForElementClickable(driver, UserRegisterPageUI.REGISTER_BUTTON);
 		clickToElement(driver, UserRegisterPageUI.REGISTER_BUTTON);
-		return PageGeneratorManager.getUserHomePage(driver);
+		return UserPageGeneratorManager.getUserHomePage(driver);
 		
 	}
 
@@ -41,6 +42,10 @@ public class UserRegisterPageObject extends BasePage{
 	public String getTextErrorLengthPassword() {
 		waitForElementVisible(driver, UserRegisterPageUI.ERROR_LENGTH_PASSWORD);
 		return getElementText(driver, UserRegisterPageUI.ERROR_LENGTH_PASSWORD);
+	}
+
+	public boolean isDisplayedIconLogIn() {
+		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK, "ico-login");
 	}
 	
 	
