@@ -23,10 +23,11 @@ public class UserOrdersPageObject extends BasePage {
 	public String getOrderNumber() {
 		waitForElementVisible(driver, UserOrdersPageUI.ORDER_NUMBER);
 		return getElementText(driver, UserOrdersPageUI.ORDER_NUMBER);
-	} 
+	}
+
 	public void clickToDetailsButton(String orderNumber) {
-		waitForElementClickable(driver, UserOrdersPageUI.DETAIL_BUTTON,orderNumber);
-		clickToElement(driver, UserOrdersPageUI.DETAIL_BUTTON,orderNumber);
+		waitForElementClickable(driver, UserOrdersPageUI.DETAIL_BUTTON, orderNumber);
+		clickToElement(driver, UserOrdersPageUI.DETAIL_BUTTON, orderNumber);
 
 	}
 
@@ -64,7 +65,6 @@ public class UserOrdersPageObject extends BasePage {
 		waitForElementVisible(driver, UserOrdersPageUI.DYNAMIC_INFO_PRODUCT_PRICE, string);
 		return getElementText(driver, UserOrdersPageUI.DYNAMIC_INFO_PRODUCT_PRICE, string);
 	}
-	
 
 	public String getProductName() {
 		waitForElementVisible(driver, UserOrdersPageUI.PRODUCT_NAME);

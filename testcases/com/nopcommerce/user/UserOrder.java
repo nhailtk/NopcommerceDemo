@@ -34,6 +34,7 @@ public class UserOrder extends BaseTest {
 	UserCustomerInfoPageObject userCustomerInfoPage;
 	UserOrdersPageObject userOrdersPage;
 
+	String urlUser = "";
 	String validEmail, productTitle;
 	String registerFirstName = "Anh Hoa";
 	String registerLastName = "Mai Nguyen";
@@ -63,10 +64,11 @@ public class UserOrder extends BaseTest {
 	String orderNumber;
 	String cardName = "Tillman Leuschke", cardNumber = "4539454156792427", monthExprationCard = "07", yearExprationCard = "2028", cardCode = "787";
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
 
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
@@ -81,13 +83,15 @@ public class UserOrder extends BaseTest {
 		userRegisterPage.clickToRegisterButton();
 
 		Assert.assertEquals(userRegisterPage.getTextConfirmRegisterSuccess(), "Your registration completed");
-		if (userRegisterPage.isDisplayedIconLogIn()) {		
-			userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
-		} else {
+		if (userRegisterPage.isUndisplayedIconLogIn()) {
 			userHomePage = (UserHomePageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-logout");
 			userLoginPage = (UserLoginPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-login");
+			
+		} else {
+			userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
+
 		}
-		
+
 		userLoginPage.inputTextboxAndClickButton(validEmail, password);
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
@@ -196,7 +200,7 @@ public class UserOrder extends BaseTest {
 		userShoppingCartPage.clickToUpdateShoppingCart();
 		userShoppingCartPage.isPageLoadedSuccess(driver);
 		Assert.assertEquals(userShoppingCartPage.getSubTotalOfProduct(), "$2,500.00");
-		
+
 		userShoppingCartPage.clickToRemoveButton();
 		Assert.assertTrue(userShoppingCartPage.verifyNoData());
 
@@ -311,7 +315,7 @@ public class UserOrder extends BaseTest {
 		userOrdersPage.isPageLoadedSuccess(driver);
 
 		Assert.assertTrue(userOrdersPage.getOrderNumberDetails().contains(orderNumber));
-		//Assert.assertEquals(userOrdersPage.verifyDisplayedOrderInfo("order-date"), getToday());
+		// Assert.assertEquals(userOrdersPage.verifyDisplayedOrderInfo("order-date"), getToday());
 		Assert.assertEquals(userOrdersPage.verifyDisplayedOrderInfo("order-status"), "Order Status: Pending");
 		Assert.assertEquals(userOrdersPage.verifyDisplayedOrderInfo("order-total"), "Order Total: $3,600.00");
 
@@ -347,11 +351,11 @@ public class UserOrder extends BaseTest {
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Shipping"), "$0.00");
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Tax"), "$0.00");
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Order Total"), "$3,600.00");
-		
+
 		userHomePage = (UserHomePageObject) userOrdersPage.openUserDynamicHeaderLinks(driver, "ico-logout");
 
 	}
-	
+
 	@Test
 	public void TC06_Checkout_Order_Payment_Method_By_Card() {
 		userLoginPage = (UserLoginPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-login");
@@ -443,8 +447,10 @@ public class UserOrder extends BaseTest {
 		Assert.assertEquals(userCheckoutPage.getDynamicInfoOfProductPrice("tax-value"), "$0.00");
 		Assert.assertEquals(userCheckoutPage.getDynamicInfoOfProductPrice("order-total"), "$3,600.00");
 
+		//userCheckoutPage.acceptAlertInPage();
+		
 		userOrderCompletedPage = (UserOrderCompletedPageObject) userCheckoutPage.clickToConfirmButton();
-
+		
 		userOrderCompletedPage.isPageLoadedSuccess(driver);
 		Assert.assertEquals(userOrderCompletedPage.getPageTitleOfOrderCompleted(), "Thank you");
 		Assert.assertEquals(userOrderCompletedPage.getTitleOfOrderCompleted(), "Your order has been successfully processed!");
@@ -498,7 +504,7 @@ public class UserOrder extends BaseTest {
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Order Total"), "$3,600.00");
 
 	}
-	
+
 	@Test
 	public void TC07_Re_Order() {
 		userShoppingCartPage = (UserShoppingCartPageObject) userOrdersPage.clickToReOrderButton();
@@ -506,7 +512,7 @@ public class UserOrder extends BaseTest {
 		userShoppingCartPage.clickToUpdateShoppingCart();
 		userShoppingCartPage.isPageLoadedSuccess(driver);
 		Assert.assertEquals(userShoppingCartPage.getSubTotalOfProduct(), "$18,000.00");
-		
+
 		userShoppingCartPage.selectTextOfDynamicDropdown(driver, "checkout_attribute_1", "No");
 		userShoppingCartPage.checkToAgreeCheckbox();
 		userCheckoutPage = (UserCheckoutPageObject) userShoppingCartPage.clickToCheckoutButton();
@@ -579,9 +585,10 @@ public class UserOrder extends BaseTest {
 		Assert.assertEquals(userCheckoutPage.getDynamicInfoOfProductPrice("shipping-cost"), "$0.00");
 		Assert.assertEquals(userCheckoutPage.getDynamicInfoOfProductPrice("tax-value"), "$0.00");
 		Assert.assertEquals(userCheckoutPage.getDynamicInfoOfProductPrice("order-total"), "$18,000.00");
-
+	
+		//userCheckoutPage.acceptAlertInPage();
 		userOrderCompletedPage = (UserOrderCompletedPageObject) userCheckoutPage.clickToConfirmButton();
-
+		
 		userOrderCompletedPage.isPageLoadedSuccess(driver);
 		Assert.assertEquals(userOrderCompletedPage.getPageTitleOfOrderCompleted(), "Thank you");
 		Assert.assertEquals(userOrderCompletedPage.getTitleOfOrderCompleted(), "Your order has been successfully processed!");
@@ -634,12 +641,11 @@ public class UserOrder extends BaseTest {
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Tax"), "$0.00");
 		Assert.assertEquals(userOrdersPage.getDynamicInfoOfProductPrice("Order Total"), "$18,000.00");
 
-		
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

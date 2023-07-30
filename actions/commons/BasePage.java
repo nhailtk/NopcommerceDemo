@@ -21,12 +21,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.nopcommerce.pageObjects.user.UserPageGeneratorManager;
 import com.nopcommerce.pageObjects.admin.AdminPageGeneratorManager;
-import com.nopcommerce.pageObjects.admin.AdminProductsListPageObject;
+import com.nopcommerce.pageObjects.admin.AdminProductListPageObject;
 import com.nopcommerce.pageObjects.user.UserHomePageObject;
 import com.nopcommerce.pageObjects.user.UserLoginPageObject;
 import com.nopcommerce.pageObjects.user.UserProductListPageObject;
 import com.nopcommerce.pageObjects.user.UserRegisterPageObject;
+import com.nopcommerce.pageUIs.admin.AdminCustomerCreatePageUI;
+import com.nopcommerce.pageUIs.admin.AdminCustomerEditPageUI;
 import com.nopcommerce.pageUIs.admin.AdminDashboardPageUI;
+import com.nopcommerce.pageUIs.admin.AdminProductListPageUI;
 import com.nopcommerce.pageUIs.user.BasePageUI;
 import com.nopcommerce.pageUIs.user.UserAddressPageUI;
 import com.nopcommerce.pageUIs.user.UserCustomerInfoPageUI;
@@ -231,19 +234,43 @@ public class BasePage {
 	}
 
 	protected void selectItemInCustomerDropdown(WebDriver driver, String parentXpath, String childXpath, String itemSelect) {
-		getElement(driver, parentXpath).click();
+		WebDriverWait explicitlyWait = new WebDriverWait(driver, longTimeOut);
+		explicitlyWait.until(ExpectedConditions.elementToBeClickable(getElement(driver, parentXpath))).click();
+		sleepInSecond(1);
+
+		List<WebElement> listItem = explicitlyWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getByLocator(childXpath)));
+		for (WebElement item : listItem) {
+			if (item.getText().trim().equals(itemSelect)) {
+				if (item.isDisplayed()) {
+					explicitlyWait.until(ExpectedConditions.elementToBeClickable(item));
+					item.click();
+				} else {
+					JavascriptExecutor jsExcutor = (JavascriptExecutor) driver;
+					jsExcutor.executeScript("arguments[0].scrollIntoView(true);", item);
+					explicitlyWait.until(ExpectedConditions.elementToBeClickable(item));
+					item.click();
+				}
+				break;
+			}
+		}
+	}
+
+	protected void selectItemInCustomerDropdownJS(WebDriver driver, String parentXpath, String childXpath, String itemSelect) {
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		jsExecutor.executeScript("arguments[0].click();", getElement(driver, parentXpath));
 		WebDriverWait explicitlyWait = new WebDriverWait(driver, longTimeOut);
 
 		List<WebElement> listItem = explicitlyWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getByLocator(childXpath)));
 		for (WebElement item : listItem) {
 			if (item.getText().trim().equals(itemSelect)) {
 				if (item.isDisplayed()) {
+					System.out.println("1");
 					item.click();
 				} else {
-					JavascriptExecutor jsExcutor = (JavascriptExecutor) driver;
-					jsExcutor.executeScript("arguments[0].scrollIntoView(true);", item);
+					jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
+					System.out.println("2");
 					sleepInSecond(1);
-					item.click();
+					jsExecutor.executeScript("arguments[0].click();", item);
 				}
 				break;
 			}
@@ -404,12 +431,12 @@ public class BasePage {
 		Actions action = new Actions(driver);
 		action.doubleClick(getElement(driver, xpathLocator)).perform();
 	}
-	
+
 	protected void doubleClickToElement(WebDriver driver, String xpathLocator, String... dynamicValues) {
 		Actions action = new Actions(driver);
 		action.doubleClick(getElement(driver, getDynamicXpath(xpathLocator, dynamicValues))).perform();
 	}
-	
+
 	protected void scrollToBottomPage(WebDriver driver) {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
@@ -631,21 +658,29 @@ public class BasePage {
 		}
 	}
 
-	public void clickToCatalogMenu(WebDriver driver, String rightIcon, String text) {
+	public void clickToRightMenu(WebDriver driver, String rightIcon, String text) {
 		waitForElementClickable(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
 		clickToElement(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
 
 	}
 
-	public BasePage clickToProductsSubMenu(WebDriver driver, String locator1, String locator2) {
+	public BasePage clickToRightSubMenu(WebDriver driver, String locator1, String locator2) {
 		waitForElementClickable(driver, BasePageUI.ADMIN_RIGHT_SUB_MENU, locator1, locator2);
 		clickToElement(driver, BasePageUI.ADMIN_RIGHT_SUB_MENU, locator1, locator2);
 		switch (locator2) {
 		case "Products":
-			return AdminPageGeneratorManager.getAdminProductsListPage(driver);
+			return AdminPageGeneratorManager.getAdminProductListPage(driver);
+		case "Customers":
+			return AdminPageGeneratorManager.getAdminCustomerListPage(driver);
 		default:
 			throw new RuntimeException("Invalid Page");
 		}
+
+	}
+
+	public void doubleClickToRightMenu(WebDriver driver, String rightIcon, String text) {
+		waitForElementClickable(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
+		doubleClickToElement(driver, BasePageUI.ADMIN_RIGHT_MENU, rightIcon, text);
 
 	}
 
@@ -657,6 +692,16 @@ public class BasePage {
 	public void inputValueToDynamicTextbox(WebDriver driver, String locatorTexbox, String value) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, locatorTexbox);
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX, value, locatorTexbox);
+	}
+
+	public void checkToDynamicCheckboxRadio(WebDriver driver, String locatorDynamic) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_CHECKBOX_RADIO_BUTTON, locatorDynamic);
+		checktoDefaultCheckboxRadio(driver, BasePageUI.DYNAMIC_CHECKBOX_RADIO_BUTTON, locatorDynamic);
+	}
+
+	public boolean isSelectedDynamicCheckboxRadio(WebDriver driver, String locatorDynamic) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_CHECKBOX_RADIO_BUTTON, locatorDynamic);
+		return elementIsSelected(driver, BasePageUI.DYNAMIC_CHECKBOX_RADIO_BUTTON, locatorDynamic);
 	}
 
 	public void selectValueOfDynamicDropdown(WebDriver driver, String locatorDynamic, String value) {
@@ -702,6 +747,39 @@ public class BasePage {
 	public String getProductName(WebDriver driver) {
 		waitForElementVisible(driver, BasePageUI.PRODUCT_NAME);
 		return getElementText(driver, BasePageUI.PRODUCT_NAME);
+	}
+
+	public String getValueInCellByHeaderName(WebDriver driver, String headerName) {
+		int index = getElementSize(driver, AdminProductListPageUI.TABLE_HEADER_INDEX_BY_HEADER_NAME, headerName) + 1;
+		waitForElementVisible(driver, AdminProductListPageUI.TABLE_ROW_VALUE_BY_HEADER_INDEX, String.valueOf(index));
+		return getElementText(driver, AdminProductListPageUI.TABLE_ROW_VALUE_BY_HEADER_INDEX, String.valueOf(index));
+	}
+
+	public void clickToDeleteIconInRoleField(WebDriver driver) {
+		waitForElementClickable(driver, AdminCustomerCreatePageUI.DELETE_ICON_IN_ROLE);
+		clickToElementByJS(driver, AdminCustomerCreatePageUI.DELETE_ICON_IN_ROLE);
+
+	}
+
+	public void selectCustomerRoleDropdown(WebDriver driver, String value) {
+		selectItemInCustomerDropdown(driver, AdminCustomerCreatePageUI.ROLE_DROPDOWN_PARENT, AdminCustomerCreatePageUI.ROLE_DROPDOWN_CHILD, value);
+
+	}
+
+	public void inputValueToCommentTextArea(WebDriver driver, String comment) {
+		waitForElementVisible(driver, AdminCustomerCreatePageUI.COMMENT_TEXTAREA);
+		sendkeyToElement(driver, AdminCustomerCreatePageUI.COMMENT_TEXTAREA, comment);
+
+	}
+	
+	public boolean verifyDisplayedConfirmMessage(WebDriver driver, String string) {
+		waitForElementVisible(driver, AdminCustomerEditPageUI.CONFIRM_MESSAGE, string);
+		return elementIsDisplayed(driver, AdminCustomerEditPageUI.CONFIRM_MESSAGE, string);
+	}
+	
+	public String getValueInDynamicTextbox(WebDriver driver, String string) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, string);
+		return getElementAttribute(driver, BasePageUI.DYNAMIC_TEXTBOX, "value", string);
 	}
 
 	protected long shortTimeOut = GlobalConstants.SHORT_TIMEOUT;

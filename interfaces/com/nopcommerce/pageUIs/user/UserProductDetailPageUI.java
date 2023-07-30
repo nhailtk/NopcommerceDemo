@@ -10,5 +10,5 @@ public class UserProductDetailPageUI {
 	public static String DYNAMIC_INFO_PRODUCT = "XPATH=//div[@id='flyout-cart']//div[@class='%s']";
 	public static String NAME_PRODUCT = "XPATH=//a[text()='Build your own computer']";
 	public static String PRICE_PRODUCT = "XPATH=//span[@id='price-value-1']";
-	
+
 }

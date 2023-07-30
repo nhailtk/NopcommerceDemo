@@ -37,23 +37,23 @@ public class UserCheckoutPageObject extends BasePage {
 		waitForElementVisible(driver, UserCheckoutPageUI.PAYMENT_INFO_LABEL);
 		return getElementText(driver, UserCheckoutPageUI.PAYMENT_INFO_LABEL);
 	}
-	
+
 	public void getPaymentInfoWithCard(String cardName, String cardNumber, String cardCode, String monthExprationCard, String yearExprationCard) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, "CreditCardType");
 		selectItemByTextInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, "Visa", "CreditCardType");
-		
+
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, "CardholderName");
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX, cardName, "CardholderName");
-		
+
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, "CardNumber");
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX, cardNumber, "CardNumber");
-		
+
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, "ExpireMonth");
 		selectItemByTextInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, monthExprationCard, "ExpireMonth");
-		
+
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_DROPDOWN, "ExpireYear");
 		selectItemByTextInDefaultDropdown(driver, BasePageUI.DYNAMIC_DROPDOWN, yearExprationCard, "ExpireYear");
-		
+
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX, "CardCode");
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX, cardCode, "CardCode");
 	}
@@ -88,7 +88,9 @@ public class UserCheckoutPageObject extends BasePage {
 		waitForElementVisible(driver, UserCheckoutPageUI.DYNAMIC_INFO_OF_PRICE, string);
 		return getElementText(driver, UserCheckoutPageUI.DYNAMIC_INFO_OF_PRICE, string);
 	}
-
-
+	
+	public void acceptAlertInPage() {
+		acceptAlert(driver);
+	}
 
 }

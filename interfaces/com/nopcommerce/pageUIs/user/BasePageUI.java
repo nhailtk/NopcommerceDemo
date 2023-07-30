@@ -6,6 +6,7 @@ public class BasePageUI {
 	public static String FOOTER_DYNAMIC_LINK = "xpath=//div[@class='footer']//a[text()='%s']";
 	public static String RIGHT_DYNAMIC_MENU_OF_MY_ACCOUNT = "xpath=//div[@class='block block-account-navigation']//a[contains(text(),'%s')]";
 	public static String DYNAMIC_TEXTBOX = "XPATH=//input[@id='%s']";
+	public static String DYNAMIC_CHECKBOX_RADIO_BUTTON = "XPATH=//input[@id='%s']";
 	public static String DYNAMIC_DROPDOWN = "XPATH=//select[@name='%s']";
 	public static String UPDATE_SUCCESS_NOTIFICATION = "XPATH=//div[@id='bar-notification']//p[contains(text(),'%s')]";
 	public static String CLOSE_BUTTON_IN_NOTIFICATION = "XPATH=//div[@id='bar-notification']//span[@class='close']";

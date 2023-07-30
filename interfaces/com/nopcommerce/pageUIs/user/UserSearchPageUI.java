@@ -5,6 +5,6 @@ public class UserSearchPageUI {
 	public static String WARNING_TEXT = "XPATH=//div[@class='warning']";
 	public static String NO_RESULT = "XPATH=//div[@class='no-result']";
 	public static String RELATIVE_RESULT = "XPATH=//h2[@class='product-title']/a";
-	public static String DYNAMIC_CHECKBOX ="XPATH=//input[@id='%s']";
+	public static String DYNAMIC_CHECKBOX = "XPATH=//input[@id='%s']";
 
 }

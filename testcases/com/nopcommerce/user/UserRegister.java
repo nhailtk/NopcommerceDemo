@@ -19,6 +19,7 @@ public class UserRegister extends BaseTest {
 	UserRegisterPageObject userRegisterPage;
 	UserHomePageObject userHomePage;
 
+	String urlUser = "";
 	String locatorFirstName = "FirstName";
 	String locatorLastName = "LastName";
 	String locatorEmail = "Email";
@@ -31,10 +32,12 @@ public class UserRegister extends BaseTest {
 	String registerPassword = "123456";
 	String validEmail;
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
+
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 
@@ -84,7 +87,6 @@ public class UserRegister extends BaseTest {
 
 		Assert.assertEquals(userRegisterPage.getTextConfirmRegisterSuccess(), "Your registration completed");
 
-		userHomePage = (UserHomePageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-lo");
 	}
 
 	@Test
@@ -135,9 +137,9 @@ public class UserRegister extends BaseTest {
 
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

@@ -6,7 +6,7 @@ import com.nopcommerce.pageUIs.user.UserLoginPageUI;
 
 import commons.BasePage;
 
-public class UserLoginPageObject extends BasePage{
+public class UserLoginPageObject extends BasePage {
 	WebDriver driver;
 
 	public UserLoginPageObject(WebDriver driver) {
@@ -17,7 +17,7 @@ public class UserLoginPageObject extends BasePage{
 	public void clickToLoginButton() {
 		waitForElementClickable(driver, UserLoginPageUI.LOGIN_BUTTON);
 		clickToElement(driver, UserLoginPageUI.LOGIN_BUTTON);
-		
+
 	}
 
 	public String getTextErrorWrongEmail() {
@@ -29,13 +29,13 @@ public class UserLoginPageObject extends BasePage{
 		waitForElementVisible(driver, UserLoginPageUI.ERROR_UNREGISTERED_EMAIL);
 		return getElementText(driver, UserLoginPageUI.ERROR_UNREGISTERED_EMAIL);
 	}
-	
+
 	public void inputTextboxAndClickButton(String Email, String password) {
-		inputValueToTextbox("Email",Email);
-		inputValueToTextbox("Password",password);
+		inputValueToTextbox("Email", Email);
+		inputValueToTextbox("Password", password);
 		clickToLoginButton();
 	}
-	
+
 	public void inputValueToTextbox(String locator, String value) {
 		waitForElementVisible(driver, UserLoginPageUI.TEXTBOX_LOCATOR, locator);
 		sendkeyToElement(driver, UserLoginPageUI.TEXTBOX_LOCATOR, value, locator);

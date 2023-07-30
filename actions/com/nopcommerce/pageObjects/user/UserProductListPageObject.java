@@ -142,7 +142,7 @@ public class UserProductListPageObject extends BasePage {
 	public void addProductToCompareList(String productName) {
 		waitForElementClickable(driver, UserProductListPageUI.ADD_TO_COMPARE_LIST_BUTTON, productName);
 		clickToElement(driver, UserProductListPageUI.ADD_TO_COMPARE_LIST_BUTTON, productName);
-		
+
 	}
 
 	public void scrollToBottom(WebDriver driver2) {

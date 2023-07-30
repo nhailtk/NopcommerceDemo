@@ -2,10 +2,20 @@
 <suite name="Nopcommerce">
 	<parameter name="urlAdmin" value="https://admin-demo.nopcommerce.com/login?ReturnUrl=/admin/" />
 	<parameter name="urlUser" value="https://demo.nopcommerce.com/" />
+
 	<test name="RunOnChrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-		<class name="com.nopcommerce.admin.AdminSearch" />
+			<class name="com.nopcommerce.user.UserRegister" />
+			<class name="com.nopcommerce.user.UserLogin" />
+			<class name="com.nopcommerce.user.UserMyAccount" />
+			<class name="com.nopcommerce.user.UserSearch" />
+			<class name="com.nopcommerce.user.UserSortDisplayPaging" />
+			<class name="com.nopcommerce.user.UserWishlistCompareRecentView" />
+			<class name="com.nopcommerce.user.UserOrder" />
+			<class name="com.nopcommerce.user.AdminProductFunctions" />
+			<class name="com.nopcommerce.user.AdminCustomerFunctions" />
+
 		</classes>
 	</test> <!-- Test -->
 

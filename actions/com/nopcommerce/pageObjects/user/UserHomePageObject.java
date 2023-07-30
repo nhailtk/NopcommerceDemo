@@ -17,18 +17,13 @@ public class UserHomePageObject extends BasePage {
 	}
 
 	public boolean verifyDisplayMyAccountMenu() {
-		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_LINK,"ico-account");
-		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK,"ico-account");
+		waitForElementVisible(driver, BasePageUI.HEADER_DYNAMIC_LINK, "ico-account");
+		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK, "ico-account");
 	}
-
 
 	public void scrollToBottom(WebDriver driver) {
 		scrollToBottomPage(driver);
-		
+
 	}
-
-
-
-
 
 }

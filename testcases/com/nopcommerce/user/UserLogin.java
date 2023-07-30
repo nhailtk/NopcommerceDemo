@@ -19,7 +19,8 @@ public class UserLogin extends BaseTest {
 	UserHomePageObject userHomePage;
 	UserLoginPageObject userLoginPage;
 	UserRegisterPageObject userRegisterPage;
-
+	
+	String urlUser = "";
 	String locatorFirstName = "FirstName";
 	String locatorLastName = "LastName";
 	String locatorEmail = "Email";
@@ -33,10 +34,12 @@ public class UserLogin extends BaseTest {
 	String password = "123456";
 	String validEmail;
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
+		
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 
@@ -97,8 +100,8 @@ public class UserLogin extends BaseTest {
 		Assert.assertTrue(userHomePage.verifyDisplayMyAccountMenu());
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 }

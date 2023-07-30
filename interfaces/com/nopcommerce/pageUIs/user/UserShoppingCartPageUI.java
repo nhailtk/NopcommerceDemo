@@ -9,6 +9,5 @@ public class UserShoppingCartPageUI {
 	public static String SUB_TOTAL = "CSS=span.product-subtotal";
 	public static String AGREE_CHECKBOX = "XPATH=//input[@id='termsofservice']";
 	public static String CHECKOUT_BUTTON = "XPATH=//button[@id='checkout']";
-	
 
 }

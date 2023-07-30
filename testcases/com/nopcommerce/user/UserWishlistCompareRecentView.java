@@ -32,12 +32,14 @@ public class UserWishlistCompareRecentView extends BaseTest {
 	UserCompareProuductsListPageObject userCompareProductsListPage;
 	UserRecentlyViewedProductsPageObject userRecentlyViewedProductsPage;
 
+	String urlUser = "";
 	String validEmail, productTitle;
 	String registerFirstName = "Anh Hoa";
 	String registerLastName = "Mai Nguyen";
 	String password = "123456";
 
-	String confirmAddedProduct = "The product has been added to your wishlist";
+	String confirmAddedProductToWhislist = "The product has been added to your wishlist";
+	String confirmAddedProductToCompare = "The product has been added to your product comparison";
 	String titleWishlistPage = "Wishlist";
 
 	String locatorFirstName = "FirstName";
@@ -46,10 +48,11 @@ public class UserWishlistCompareRecentView extends BaseTest {
 	String locatorPassword = "Password";
 	String locatorConfirmPassword = "ConfirmPassword";
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
 
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
@@ -81,7 +84,7 @@ public class UserWishlistCompareRecentView extends BaseTest {
 		userProductDetailPage = userProductListPage.clickToProductTitle("Lenovo IdeaCentre 600 All-in-One PC");
 
 		userProductDetailPage.clickToAddWishlistButton();
-		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProductToWhislist);
 		userProductDetailPage.clickToCloseButtonInNotification(driver);
 
 		userWishlistPage = (UserWishlistPageObject) userProductDetailPage.openUserDynamicHeaderLinks(driver, "ico-wishlist");
@@ -117,12 +120,12 @@ public class UserWishlistCompareRecentView extends BaseTest {
 
 		userProductListPage.addProductToCompareList("Apple MacBook Pro 13-inch");
 		userProductListPage.isPageLoadedSuccess(driver);
-		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProductToCompare);
 		userProductListPage.clickToCloseButtonInNotification(driver);
 
 		userProductListPage.addProductToCompareList("Asus N551JK-XO076H Laptop");
 		userProductListPage.isPageLoadedSuccess(driver);
-		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProduct);
+		Assert.assertEquals(userProductDetailPage.getConfirmAddedProduct(), confirmAddedProductToCompare);
 		userProductListPage.clickToCloseButtonInNotification(driver);
 
 		userProductListPage.scrollToBottom(driver);
@@ -131,33 +134,35 @@ public class UserWishlistCompareRecentView extends BaseTest {
 
 		userCompareProductsListPage.clickToClearListButton();
 		Assert.assertTrue(userCompareProductsListPage.verifyNoData());
+		
 	}
-	
+
 	@Test
 	public void TC05_Recently_Viewed_Products() {
+		userCompareProductsListPage.isPageLoadedSuccess(driver);
 		userProductListPage = (UserProductListPageObject) userCompareProductsListPage.openProductListPage(driver, "Computers", "Notebooks");
 		userProductDetailPage = userProductListPage.clickToProductTitle("Apple MacBook Pro 13-inch");
-		
+
 		userProductListPage = (UserProductListPageObject) userProductDetailPage.openProductListPage(driver, "Computers", "Notebooks");
 		userProductDetailPage = userProductListPage.clickToProductTitle("Asus N551JK-XO076H Laptop");
-				
+
 		userProductListPage = (UserProductListPageObject) userProductDetailPage.openProductListPage(driver, "Computers", "Notebooks");
 		userProductDetailPage = userProductListPage.clickToProductTitle("HP Envy 6-1180ca 15.6-Inch Sleekbook");
-		
+
 		userProductListPage = (UserProductListPageObject) userProductDetailPage.openProductListPage(driver, "Computers", "Notebooks");
 		userProductDetailPage = userProductListPage.clickToProductTitle("HP Spectre XT Pro UltraBook");
-		
+
 		userProductListPage = (UserProductListPageObject) userProductDetailPage.openProductListPage(driver, "Computers", "Notebooks");
 		userProductDetailPage = userProductListPage.clickToProductTitle("Lenovo Thinkpad X1 Carbon Laptop");
-				
+
 		userProductDetailPage.scrollToBottom(driver);
 		userRecentlyViewedProductsPage = (UserRecentlyViewedProductsPageObject) userProductDetailPage.openUserDynamicFooterLinks(driver, "Recently viewed products");
 		Assert.assertTrue(userRecentlyViewedProductsPage.verifyInformationDisplayed());
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

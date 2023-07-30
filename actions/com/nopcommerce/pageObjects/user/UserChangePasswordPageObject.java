@@ -18,7 +18,7 @@ public class UserChangePasswordPageObject extends BasePage {
 	public void clickToChangePasswordButton() {
 		waitForElementClickable(driver, UserChangePasswordPageUI.CHANGE_PASSWORD_BUTTON);
 		clickToElement(driver, UserChangePasswordPageUI.CHANGE_PASSWORD_BUTTON);
-		
+
 	}
 
 }

@@ -8,6 +8,5 @@ public class UserOrdersPageUI {
 	public static String PRODUCT_NAME = "XPATH=//td[@class='product']/em/a";
 	public static String DYNAMIC_INFO_PRODUCT_PRICE = "XPATH=//label[text()='%s:']/parent::td/following-sibling::td/span";
 	public static String REORDER_BUTTON = "XPATH=//button[text()='Re-order']";
-	
 
 }

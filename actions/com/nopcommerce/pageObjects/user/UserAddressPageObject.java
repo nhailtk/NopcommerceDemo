@@ -18,19 +18,18 @@ public class UserAddressPageObject extends BasePage {
 	public void clickToAddNewButton() {
 		waitForElementClickable(driver, UserAddressPageUI.ADD_NEW_BUTTON);
 		clickToElement(driver, UserAddressPageUI.ADD_NEW_BUTTON);
-		
+
 	}
 
 	public void clickToSaveButton() {
 		waitForElementClickable(driver, UserAddressPageUI.SAVE_BUTTON);
 		clickToElement(driver, UserAddressPageUI.SAVE_BUTTON);
-		
+
 	}
 
 	public String getValueOfDynamicLabel(String string) {
 		waitForElementVisible(driver, UserAddressPageUI.DYNAMIC_LABEL, string);
 		return getElementText(driver, UserAddressPageUI.DYNAMIC_LABEL, string);
 	}
-	
 
 }

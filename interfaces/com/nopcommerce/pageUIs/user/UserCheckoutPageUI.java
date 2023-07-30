@@ -12,5 +12,4 @@ public class UserCheckoutPageUI {
 	public static String CONFIRM_BUTTON = "xpath=//button[text()='Confirm']";
 	public static String GIFT_WRAPPING = "xpath=//div[@class='selected-checkout-attributes']";
 
-
 }

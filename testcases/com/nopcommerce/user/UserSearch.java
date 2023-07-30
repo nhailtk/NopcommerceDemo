@@ -22,6 +22,7 @@ public class UserSearch extends BaseTest {
 	UserLoginPageObject userLoginPage;
 	UserSeachPageObject userSearchPage;
 
+	String urlUser = "";
 	String validEmail;
 	String registerFirstName = "Anh Hoa";
 	String registerLastName = "Mai Nguyen";
@@ -35,10 +36,12 @@ public class UserSearch extends BaseTest {
 
 	String locatorSearchTextbox = "q";
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
+
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
 		userRegisterPage = (UserRegisterPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-register");
@@ -143,9 +146,9 @@ public class UserSearch extends BaseTest {
 		Assert.assertEquals(userSearchPage.verifyResultWithSearch(), "Apple MacBook Pro 13-inch");
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

@@ -6,7 +6,7 @@ import com.nopcommerce.pageUIs.admin.AdminDashboardPageUI;
 
 import commons.BasePage;
 
-public class AdminDashboardPageObject extends BasePage{
+public class AdminDashboardPageObject extends BasePage {
 	WebDriver driver;
 
 	public AdminDashboardPageObject(WebDriver driver) {
@@ -17,8 +17,7 @@ public class AdminDashboardPageObject extends BasePage{
 	public boolean verifyDisplayedTitle() {
 		waitForElementVisible(driver, AdminDashboardPageUI.DASHBOARD_TITLE);
 		return elementIsDisplayed(driver, AdminDashboardPageUI.DASHBOARD_TITLE);
-		
+
 	}
-	
 
 }

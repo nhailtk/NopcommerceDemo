@@ -32,6 +32,7 @@ public class UserMyAccount extends BaseTest {
 	UserProductDetailPageObject userProductDetailPage;
 	UserProductReviewsPageObject userProductReviewsPage;
 
+	String urlUser = "";
 	String locatorFirstName = "FirstName";
 	String locatorLastName = "LastName";
 	String locatorEmail = "Email";
@@ -81,10 +82,12 @@ public class UserMyAccount extends BaseTest {
 	String textAddProductReviewContent = "Product Review Content: ";
 	String productTitle;
 
-	@Parameters("browser")
+	@Parameters({ "browser", "urlUser" })
 	@BeforeClass
-	public void beforeClass(String browser) {
-		driver = getWebDriver(browser);
+	public void beforeClass(String browserName, String urlUser) {
+		this.urlUser = urlUser;
+		driver = getWebDriver(browserName, this.urlUser);
+
 		validEmail = "anhhoa" + randomInt() + "@gmail.com";
 		editEmail = "editEmail" + randomInt() + "@gmail.com";
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
@@ -99,10 +102,14 @@ public class UserMyAccount extends BaseTest {
 		userRegisterPage.clickToRegisterButton();
 
 		Assert.assertEquals(userRegisterPage.getTextConfirmRegisterSuccess(), "Your registration completed");
+		if (userRegisterPage.isUndisplayedIconLogIn()) {
+			userHomePage = (UserHomePageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-logout");
+			userLoginPage = (UserLoginPageObject) userHomePage.openUserDynamicHeaderLinks(driver, "ico-login");
+			
+		} else {
+			userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
 
-		// userHomePage = (UserHomePageObject) userRegisterPage.openDynamicHeaderLinks(driver, "ico-logout");
-
-		userLoginPage = (UserLoginPageObject) userRegisterPage.openUserDynamicHeaderLinks(driver, "ico-login");
+		}
 
 		userLoginPage.inputTextboxAndClickButton(validEmail, password);
 		userHomePage = UserPageGeneratorManager.getUserHomePage(driver);
@@ -220,16 +227,16 @@ public class UserMyAccount extends BaseTest {
 		userProductReviewsPage.inputValueToDynamicTextbox(driver, locatorAddProductReviewTitle, textAddProductReviewTitle + productTitle);
 		userProductReviewsPage.inputValueToProductReviewContentTextArea(driver, textAddProductReviewContent + productTitle);
 		userProductReviewsPage.clickSubmitReviewButton();
-		
+
 		Assert.assertTrue(userProductReviewsPage.verifyDisplayProductReviewTitle(textAddProductReviewTitle, productTitle));
 		Assert.assertTrue(userProductReviewsPage.verifyDisplayProductReviewContent(textAddProductReviewContent, productTitle));
-		
+
 		userHomePage = (UserHomePageObject) userProductReviewsPage.openUserDynamicHeaderLinks(driver, "ico-logout");
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

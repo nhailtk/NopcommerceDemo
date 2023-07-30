@@ -1,9 +1,7 @@
 package com.nopcommerce.pageUIs.user;
 
 public class UserRegisterPageUI {
-
 	public static String REGISTER_BUTTON = "css=button#register-button";
-
 	public static String ERROR_VALIDATE_FIELD = "xpath=//span[@id='%s-error']";
 	public static String TEXTBOX_LOCATOR = "xpath=//input[@id='%s']";
 	public static String CONFIRM_REGISTER_SUCCESS = "xpath=//div[@class='result']";

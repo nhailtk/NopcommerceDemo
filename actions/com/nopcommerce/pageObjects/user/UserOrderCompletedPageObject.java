@@ -1,5 +1,6 @@
 package com.nopcommerce.pageObjects.user;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 import com.nopcommerce.pageUIs.user.UserOrderCompletedPageUI;
@@ -33,4 +34,5 @@ public class UserOrderCompletedPageObject extends BasePage {
 		waitForElementVisible(driver, UserOrderCompletedPageUI.ORDER_NUMBER_OF_ORDER_COMPLETED);
 		return getElementText(driver, UserOrderCompletedPageUI.ORDER_NUMBER_OF_ORDER_COMPLETED);
 	}
+
 }

@@ -8,7 +8,7 @@ import com.nopcommerce.pageUIs.user.UserRegisterPageUI;
 
 import commons.BasePage;
 
-public class UserRegisterPageObject extends BasePage{
+public class UserRegisterPageObject extends BasePage {
 	WebDriver driver;
 
 	public UserRegisterPageObject(WebDriver driver) {
@@ -20,7 +20,7 @@ public class UserRegisterPageObject extends BasePage{
 		waitForElementClickable(driver, UserRegisterPageUI.REGISTER_BUTTON);
 		clickToElement(driver, UserRegisterPageUI.REGISTER_BUTTON);
 		return UserPageGeneratorManager.getUserHomePage(driver);
-		
+
 	}
 
 	public String getErrorMessageAtTextbox(String locatorError) {
@@ -28,7 +28,6 @@ public class UserRegisterPageObject extends BasePage{
 		return getElementText(driver, UserRegisterPageUI.ERROR_VALIDATE_FIELD, locatorError);
 	}
 
-	
 	public String getTextConfirmRegisterSuccess() {
 		waitForElementVisible(driver, UserRegisterPageUI.CONFIRM_REGISTER_SUCCESS);
 		return getElementText(driver, UserRegisterPageUI.CONFIRM_REGISTER_SUCCESS);
@@ -44,10 +43,8 @@ public class UserRegisterPageObject extends BasePage{
 		return getElementText(driver, UserRegisterPageUI.ERROR_LENGTH_PASSWORD);
 	}
 
-	public boolean isDisplayedIconLogIn() {
-		return elementIsDisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK, "ico-login");
+	public boolean isUndisplayedIconLogIn() {
+		return elementIsUndisplayed(driver, BasePageUI.HEADER_DYNAMIC_LINK, "ico-login");
 	}
-	
-	
 
 }

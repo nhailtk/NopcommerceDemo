@@ -42,7 +42,7 @@ public class UserProductDetailPageObject extends BasePage {
 		clickToElement(driver, UserProductDetailPageUI.ADD_TO_CART_BUTTON);
 
 	}
-	
+
 	public void clickToUpdateButton() {
 		waitForElementClickable(driver, UserProductDetailPageUI.UPDATE_TO_CART_BUTTON);
 		clickToElement(driver, UserProductDetailPageUI.UPDATE_TO_CART_BUTTON);
@@ -73,7 +73,7 @@ public class UserProductDetailPageObject extends BasePage {
 	public void uncheckToDefaultCheckboxRadio(WebDriver driver2, String string) {
 		waitForElementVisible(driver2, UserProductDetailPageUI.DYNAMIC_CHECKBOX_RADIO, string);
 		unchecktoDefaultCheckboxRadio(driver2, UserProductDetailPageUI.DYNAMIC_CHECKBOX_RADIO, string);
-		
+
 	}
 
 	public String getPriceProduct() {

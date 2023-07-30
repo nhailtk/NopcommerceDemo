@@ -23,14 +23,14 @@ public class UserShoppingCartPageObject extends BasePage {
 	public void clickToRemoveButton() {
 		waitForElementClickable(driver, UserShoppingCartPageUI.REMOVE_BUTTON);
 		clickToElement(driver, UserShoppingCartPageUI.REMOVE_BUTTON);
-		
+
 	}
 
 	public boolean verifyNoData() {
 		waitForElementVisible(driver, UserShoppingCartPageUI.NO_DATA);
-		if(elementIsDisplayed(driver, UserShoppingCartPageUI.NO_DATA) && elementIsUndisplayed(driver, UserShoppingCartPageUI.EDIT_BUTTON)) {
+		if (elementIsDisplayed(driver, UserShoppingCartPageUI.NO_DATA) && elementIsUndisplayed(driver, UserShoppingCartPageUI.EDIT_BUTTON)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
@@ -38,7 +38,7 @@ public class UserShoppingCartPageObject extends BasePage {
 	public void clickToUpdateShoppingCart() {
 		waitForElementClickable(driver, UserShoppingCartPageUI.UPDATE_SHOPPING_CART);
 		clickToElement(driver, UserShoppingCartPageUI.UPDATE_SHOPPING_CART);
-		
+
 	}
 
 	public String getSubTotalOfProduct() {
@@ -49,20 +49,19 @@ public class UserShoppingCartPageObject extends BasePage {
 	public void inputQuantityProduct(String string) {
 		waitForElementVisible(driver, UserShoppingCartPageUI.QUANTITY_PRODUCT);
 		sendkeyToElement(driver, UserShoppingCartPageUI.QUANTITY_PRODUCT, string);
-		
+
 	}
-	
+
 	public void checkToAgreeCheckbox() {
 		waitForElementClickable(driver, UserShoppingCartPageUI.AGREE_CHECKBOX);
-		checktoDefaultCheckboxRadio(driver,UserShoppingCartPageUI.AGREE_CHECKBOX);
+		checktoDefaultCheckboxRadio(driver, UserShoppingCartPageUI.AGREE_CHECKBOX);
 	}
-	
+
 	public UserCheckoutPageObject clickToCheckoutButton() {
 		waitForElementClickable(driver, UserShoppingCartPageUI.CHECKOUT_BUTTON);
 		clickToElement(driver, UserShoppingCartPageUI.CHECKOUT_BUTTON);
 		return UserPageGeneratorManager.getUserCheckoutPage(driver);
-		
-	}
 
+	}
 
 }
