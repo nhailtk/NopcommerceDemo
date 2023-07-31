@@ -13,8 +13,8 @@
 			<class name="com.nopcommerce.user.UserSortDisplayPaging" />
 			<class name="com.nopcommerce.user.UserWishlistCompareRecentView" />
 			<class name="com.nopcommerce.user.UserOrder" />
-			<class name="com.nopcommerce.user.AdminProductFunctions" />
-			<class name="com.nopcommerce.user.AdminCustomerFunctions" />
+			<class name="com.nopcommerce.admin.AdminProductFunctions" />
+			<class name="com.nopcommerce.admin.AdminCustomerFunctions" />
 
 		</classes>
 	</test> <!-- Test -->
